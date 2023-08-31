@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Barcode Generator</title>
+        <script src="./JsBarcode.all.js"></script>
+        <style>
+            .generate {
+                position: fixed;
+                left: 10px;
+                top: 10px;
+            }
+            #barcodeContainer {
+                position: relative;
+                top: 30px;
+                left: 500px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <div class="generate">
+                <textarea id="barcodeInput" rows="20" cols="30"></textarea>
+                <button onclick="clearInput()">清空</button>
+                <button onclick="generateBarcodes()">生成</button>
+            </div>
+            <div id="barcodeContainer"></div>
+        </div>
+
+        <script>
+            // import { JsBarcode } from 'JsBarcode'
+            function generateBarcodes() {
+                const barcodeInput = document.getElementById('barcodeInput').value
+                const barcodeLines = barcodeInput.split('\n')
+
+                const barcodeContainer = document.getElementById('barcodeContainer')
+                barcodeContainer.innerHTML = ''
+
+                barcodeLines.forEach((barcode) => {
+                    const divElement = document.createElement('div')
+                    const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+                    JsBarcode(svgElement, barcode, {
+                        format: 'CODE128',
+                        displayValue: true,
+                    })
+                    divElement.appendChild(svgElement)
+                    barcodeContainer.appendChild(divElement)
+                })
+            }
+
+            function clearInput() {
+                const barcodeInput = document.getElementById('barcodeInput')
+                barcodeInput.value = ''
+
+                const barcodeContainer = document.getElementById('barcodeContainer')
+                barcodeContainer.innerHTML = ''
+            }
+        </script>
+    </body>
+</html>
